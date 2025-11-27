@@ -9,6 +9,7 @@ import sys
 
 data_dir='./'
 
+
 #read data
 with open(data_dir+'GWTC3_BBH_Mixed_5000.pickle', 'rb') as fp:
     samples3, evidences3 = pickle.load(fp)
@@ -16,8 +17,13 @@ Nobs3=len(samples3)
 ln_evidences3=[np.log(ev) for ev in evidences3]
 print('number of events in GWTC-3:',Nobs3)
 
-with open(data_dir+'O4a_BBH_Mixed5000_Nobs_84.pickle', 'rb') as fp:
-    samples4, ln_evidences4 = pickle.load(fp)
+with open(data_dir+'O4a_BBH_Mixed_5000_Nobs_50.pickle', 'rb') as fp:
+    samples4_1, ln_evidences4_1 = pickle.load(fp)
+
+with open(data_dir+'O4a_BBH_Mixed_5000_Nobs_34.pickle', 'rb') as fp:
+    samples4_2, ln_evidences4_2 = pickle.load(fp)
+samples4=samples4_1+samples4_2
+ln_evidences4=ln_evidences4_1+ln_evidences4_2
 Nobs4=len(samples4)
 print('number of events in O4a:',Nobs4)
 

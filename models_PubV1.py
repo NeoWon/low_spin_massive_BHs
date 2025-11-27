@@ -268,7 +268,6 @@ def hyper_Double_nonpmact(dataset,alpha1,mmin1,mmax1,delta1,n1,n2,n3,n4,n5,n6,n7
 #selection function
 #
 #################################################################
-
 def p_a(a):
     xx=np.linspace(0,1,500)
     yy=np.exp(-2*xx**2)
@@ -287,7 +286,20 @@ def p_phi(phi):
 def lnp_spin(a1,a2,t1,t2,phi1,phi2):
     return np.log(p_a(a1))+np.log(p_a(a2))+np.log(p_t(t1))+np.log(p_t(t2))+np.log(p_phi(phi1))+np.log(p_phi(phi2))
 
-path = inject_dir+"mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf"
+def O3p_a(a):
+    return 1
+
+def O3p_ct(ct):
+    return 1/2
+
+def O3p_t(t):
+    return np.sin(t)*O3p_ct(np.cos(t))
+
+def O3lnp_spin(a1,a2,t1,t2,phi1,phi2):
+    return np.log(O3p_a(a1))+np.log(O3p_a(a2))+np.log(O3p_t(t1))+np.log(O3p_t(t2))+np.log(p_phi(phi1))+np.log(p_phi(phi2))
+
+
+path = inject_dir+"./mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf"
 with h5py.File(path, "r") as f:
     Tobs=f.attrs['total_analysis_time']/(365.25*24*3600)
     Ndraw = f.attrs['total_generated']
@@ -313,6 +325,14 @@ lnp_draw = np.array(events['lnpdraw_mass1_source_mass2_source_redshift_spin1_mag
 #lnp_draw = lnp_draw + ln_ws
 lnp_draw = lnp_draw - ln_ws
 
+O4_min_far = np.min([events["%s_far"%search] for search in ['o4a_cwb-bbh', 'o4a_gstlal', 'o4a_mbta','o4a_pycbc']], axis=0)
+O3_min_far = np.min([events["%s_far"%search] for search in ['o3_cwb','o3_pycbc_bbh', 'o3_gstlal', 'o3_mbta', 'o3_pycbc_hyperbank']], axis=0)
+############################################################
+#lnp_spin for O4a, and np.log(1./4.) for O3
+log_pspin = lnp_spin(a1_inj,a2_inj,t1_inj,t2_inj,phi1_inj,phi2_inj)*(O4_min_far<1)+O3lnp_spin(a1_inj,a2_inj,t1_inj,t2_inj,phi1_inj,phi2_inj)*(O3_min_far<1)
+logpdraw=lnp_draw-log_pspin+np.log(1./4.)
+
+#exclude NS with has spin magnitude U(0,0.4)
 sel_indx=np.where((m2_inj>2) & (m1_inj<300))
 
 m1_inj=m1_inj[sel_indx]
@@ -328,18 +348,14 @@ phi1_inj=phi1_inj[sel_indx]
 phi2_inj=phi2_inj[sel_indx]
 
 detected=detected[sel_indx]
-lnp_draw=lnp_draw[sel_indx]
-
-
-log_pspin = lnp_spin(a1_inj,a2_inj,t1_inj,t2_inj,phi1_inj,phi2_inj)
-logpdraw=lnp_draw-log_pspin+np.log(1./4.)
+logpdraw=logpdraw[sel_indx]
 
 detection_selector = detected
 
 log1pz_inj = np.log1p(z_inj)
 logdVdz_inj = np.log(4*np.pi) + np.log(Planck15.differential_comoving_volume(z_inj).to(u.Gpc**3/u.sr).value)
 
-#This selection effect accounts for spin distribution
+#This selection effect not accounts for spin distribution
 def Rate_selection_function_with_uncertainty(Nobs,mass_spin_model,lgR0,gamma,**kwargs):
     log_dNdz = lgR0/np.log10(np.e) + (gamma-1)*log1pz_inj + logdVdz_inj
     log_dNdmds = np.log(mass_spin_model(m1_inj,m2_inj,a1_inj,a2_inj,ct1_inj,ct2_inj,**kwargs))
