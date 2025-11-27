@@ -6,21 +6,17 @@ import sys
 #
 #################################################################
 
-if os.path.isdir('/Users/liyinjie/Desktop/Works/Globle_data/GW_data'):
-    data_dir='/Users/liyinjie/Desktop/Works/Globle_data/GW_data/'
-elif os.path.isdir('/public1/home/m8s000968/GWdata/post'):
-    data_dir='/public1/home/m8s000968/GWdata/post/'
-else:
-    print(f"please specify your data dir")
+
+data_dir='./'
 
 #read data
-with open(data_dir+'GWTC-3/GWTC3_BBH_Mixed_5000.pickle', 'rb') as fp:
+with open(data_dir+'GWTC3_BBH_Mixed_5000.pickle', 'rb') as fp:
     samples3, evidences3 = pickle.load(fp)
 Nobs3=len(samples3)
 ln_evidences3=[np.log(ev) for ev in evidences3]
 print('number of events in GWTC-3:',Nobs3)
 
-with open(data_dir+'GWTC-4/O4a_BBH_Mixed5000_Nobs_84.pickle', 'rb') as fp:
+with open(data_dir+'O4a_BBH_Mixed5000_Nobs_84.pickle', 'rb') as fp:
     samples4, ln_evidences4 = pickle.load(fp)
 Nobs4=len(samples4)
 print('number of events in O4a:',Nobs4)

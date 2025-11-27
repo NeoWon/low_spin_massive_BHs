@@ -14,12 +14,9 @@ import os
 import pickle
 import sys
 
-if os.path.isdir('/Users/liyinjie/Desktop/Works/Globle_data/GW_data'):
-    inject_dir='/Users/liyinjie/Desktop/Works/Globle_data/GW_data/'
-elif os.path.isdir('/public1/home/m8s000968/GWdata/post'):
-    inject_dir='/public1/home/m8s000968/GWdata/post/'
-else:
-    print(f"please specify your inject_dir")
+
+inject_dir='./'
+
 
 #############################################################################################################################
 #
@@ -290,7 +287,7 @@ def p_phi(phi):
 def lnp_spin(a1,a2,t1,t2,phi1,phi2):
     return np.log(p_a(a1))+np.log(p_a(a2))+np.log(p_t(t1))+np.log(p_t(t2))+np.log(p_phi(phi1))+np.log(p_phi(phi2))
 
-path = inject_dir+"GWTC-4/mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf"
+path = inject_dir+"mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf"
 with h5py.File(path, "r") as f:
     Tobs=f.attrs['total_analysis_time']/(365.25*24*3600)
     Ndraw = f.attrs['total_generated']
