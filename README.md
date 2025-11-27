@@ -14,8 +14,9 @@ The events posterior samples are adopted from the [Gravitational Wave Open Scien
 here `C01:Mixed` samples are used for analysis and stored in `./GWTC3_BBH_Mixed_5000.pickle` and `./O4a_BBH_Mixed5000_Nobs_84.pickle`
 We adopt 5000 samples for per event. For events with initial sample sizes less than 5000, the posterior samples are reused.
 
-The injection campaign file `./mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf`
-was released by [Abbot et al.](https://zenodo.org/records/16740128), 
+Note that one should first download the injection campaign file `./mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf`
+from [Abbot et al.](https://zenodo.org/records/16740128), 
+and set it to `./`
   
 #### Hierarchical Bayesian inference
 - Inference with our main model: run the python script `LowspinHighmass_infer.py`.
