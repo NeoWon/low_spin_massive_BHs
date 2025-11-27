@@ -11,7 +11,7 @@ These files include the codes and data to re-produce the results of the work  _A
 
 #### Data
 The events posterior samples are adopted from the [Gravitational Wave Open Science Center](https://www.gw-openscience.org/eventapi/html/GWTC/), 
-here `C01:Mixed` samples are used for analysis and stored in `./GWTC3_BBH_Mixed_5000.pickle` and `./O4a_BBH_Mixed5000_Nobs_84.pickle`
+here `C01:Mixed` samples are used for analysis and stored in `./GWTC3_BBH_Mixed_5000.pickle`, `./O4a_BBH_Mixed5000_Nobs_34.pickle`, and `./O4a_BBH_Mixed5000_Nobs_50.pickle`.
 We adopt 5000 samples for per event. For events with initial sample sizes less than 5000, the posterior samples are reused.
 
 Note that one should first download the injection campaign file `./mixture-semi_o1_o2-real_o3_o4a-polar_spins_20250503134659UTC.hdf`
